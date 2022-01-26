@@ -34,15 +34,15 @@ const FoodList = (props) => {
     const [sortedUsers, setSortedUsers] = useState([]);
     const [sortName, setSortName] = useState(true);
     const [searchText, setSearchText] = useState("");
-    const [checker, setch] = React.useState(data.canteen);
+    const [checker, setch] = React.useState(data.email);
 
 
 
 
     useEffect(() => {
-        setData(data.canteen
+        setData(data.email
         );
-        setch(data.canteen);
+        setch(data.email);
         console.log(checker);
         console.log(data);
         axios
@@ -60,46 +60,12 @@ const FoodList = (props) => {
     }, []);
 
     const navigate = useNavigate();
-    const onreject = ({ id }) => {
-        const status = "REJECTED";
-        const newUser = {
-            id: id,
-            status: status,
-        };
+    
 
-        axios
-            .post("http://localhost:4000/buyfood/status_update", newUser)
-            .then((response) => {
-                // alert("Created\t" + response.data.name);
-                console.log(response.data);
-                window.location.reload(false);
-            });
-
-
-    };
-    const onaccept = ({ id }) => {
-        const status = "ACCEPTED";
-        const newUser = {
-            id: id,
-            status: status,
-        };
-
-        axios
-            .post("http://localhost:4000/buyfood/status_update", newUser)
-            .then((response) => {
-                // alert("Created\t" + response.data.name);
-                console.log(response.data);
-                window.location.reload(false);
-            });
-
-    };
     const onchanger = ({ id, status }) => {
 
-        if (status === "ACCEPTED") {
-            status = "COOKING";
-        }
-        else if (status === "COOKING") {
-            status = "READY FOR PICKUP";
+        if (status === "READY FOR PICKUP") {
+            status = "DELIVERED";
         }
         const newUser = {
             id: id,
@@ -149,11 +115,14 @@ const FoodList = (props) => {
                             Canteen Portal
                         </Typography>
                         <Box sx={{ flexGrow: 1 }} />
-                        <Button color="inherit" onClick={() => navigate("/users")}>
+                        <Button color="inherit" onClick={() => navigate("/buyer")}>
                             MENU
                         </Button>
                         <Button color="inherit" onClick={() => navigate("/profile")}>
                             My Profile
+                        </Button>
+                        <Button color="inherit" onClick={() => navigate("/cart")}>
+                            MY CART
                         </Button>
                         <Button color="inherit" onClick={() => navigate("/login")}>
                             Log Out
@@ -262,7 +231,7 @@ const FoodList = (props) => {
                                 <TableBody>
                                     {users.map((user, ind) => (
                                         <TableRow key={ind}>
-                                            {checker === user.canteen2 &&
+                                            {checker === user.email &&
                                                 <>
                                                     <TableCell>{ind}</TableCell>
                                                     <TableCell>{user.item}</TableCell>
@@ -274,26 +243,16 @@ const FoodList = (props) => {
                                                     <TableCell>{user.email}</TableCell>
                                                     <TableCell>{user.status}</TableCell>
                                                     <TableCell>
-                                                        {user.status === "Placed" &&
+                                                        {user.status === "READY FOR PICKUP" &&
                                                             <>
-                                                                <Button color="success" onClick={() => onaccept({ id: user._id })}>
-                                                                    ACCEPT
-                                                                </Button>
-                                                                <Button color="success" onClick={() => onreject({ id: user._id })}>
-                                                                    REJECT
-                                                                </Button>
-                                                            </>
-                                                        }
-                                                        {user.status !== "Placed" && user.status !== "REJECTED" && user.status !== "DELIVERED" && user.status !== "READY FOR PICKUP" &&
-                                                            <>
-                                                                <Button color="success" onClick={() => onchanger({id:user._id, status: user.status })}>
-                                                                    NEXT STEP
+                                                                <Button color="inherit" onClick={() => onchanger({id:user._id, status: user.status })}>
+                                                                    PICKUP
                                                                 </Button>
                                                             </>
                                                         }
                                                     </TableCell>
                                                 </>
-                                            }
+                                            } 
                                         </TableRow>
                                     ))}
                                 </TableBody>

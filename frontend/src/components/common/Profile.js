@@ -124,6 +124,9 @@ export default function Profile() {
                 <Button color="inherit" onClick={() => navigate("/profile")}>
                   My Profile
                 </Button>
+                <Button color="inherit" onClick={() => navigate("/cart")}>
+                  MY CART
+                </Button>
                 <Button color="inherit" onClick={() => navigate("/login")}>
                   Log Out
                 </Button>
@@ -148,11 +151,11 @@ export default function Profile() {
         {data.type === "STUDENT" &&
           <Grid container spacing={2}>
             <Grid item xs={6}
-            align={"center"}
-            component="form"
-            sx={{
-              '& .MuiTextField-root': { m: 1, width: '25ch' },
-            }}>
+              align={"center"}
+              component="form"
+              sx={{
+                '& .MuiTextField-root': { m: 1, width: '25ch' },
+              }}>
               <div>
                 <TextField
                   id="outlined-read-only-input"
@@ -234,11 +237,11 @@ export default function Profile() {
               </div>
             </Grid>
             <Grid item xs={6}
-            align={"center"}
-            component="form"
-            sx={{
-              '& .MuiTextField-root': { m: 1, width: '25ch' },
-            }}>
+              align={"center"}
+              component="form"
+              sx={{
+                '& .MuiTextField-root': { m: 1, width: '25ch' },
+              }}>
               <div>
                 <TextField
                   id="outlined-read-only-input"

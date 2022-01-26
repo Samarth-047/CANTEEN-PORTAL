@@ -1,12 +1,12 @@
 var express = require("express");
 var router = express.Router();
 // Load User model
-const User = require("../models/food");
+const food = require("../models/food");
 
 // GET request 
 // Getting all the users
 router.get("/", function(req, res) {
-    User.find(function(err, users) {
+    food.find(function(err, users) {
 		if (err) {
 			console.log(err);
 		} else {
@@ -47,7 +47,7 @@ router.post("/food_edit_search", (req, res) => {
     
     console.log(item);
 	// Find user by email
-	User.findOne({ item }).then(user => {
+	food.findOne({ item }).then(user => {
 		// Check if user email exists
 		if (!user) {
 			return res.status(404).json({
@@ -65,7 +65,7 @@ router.post("/food_edit", (req, res) => {
     var newUserData = req.body;
     console.log(newUserData);
 	// Find user by email
-	User.findOneAndUpdate({ item:newUserData.item },
+	food.findOneAndUpdate({ item:newUserData.item },
         newUserData, {upsert:true}, (err, user)=> {
            if (err) {console.log(err)} 
            else {
@@ -78,9 +78,10 @@ router.post("/food_edit", (req, res) => {
     
 });
 router.post("/food_place_search", (req, res) => {
+    console.log(req.body);
 	var item = req.body.item;
 	// Find user by email
-	User.findOne({ item }).then(user => {
+	food.findOne({ item }).then(user => {
 		// Check if user email exists
 		if (!user) {
 			return res.status(404).json({
@@ -98,7 +99,7 @@ router.post("/food_delete_search", (req, res) => {
     
     console.log(item);
 	// Find user by email
-	User.findOne({ item }).then(user => {
+	food.findOne({ item }).then(user => {
 		// Check if user email exists
 		if (!user) {
 			return res.status(404).json({

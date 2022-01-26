@@ -87,6 +87,9 @@ const FoodList = (props) => {
             <Button color="inherit" onClick={() => navigate("/profile")}>
               My Profile
             </Button>
+            <Button color="inherit" onClick={() => navigate("/cart")}>
+              MY CART
+            </Button>
             <Button color="inherit" onClick={() => navigate("/login")}>
               Log Out
             </Button>
@@ -114,6 +117,8 @@ const FoodList = (props) => {
                 id="standard-basic"
                 label="Search"
                 fullWidth={true}
+                value={searchText}
+                onChange={customFunction}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment>
@@ -128,94 +133,128 @@ const FoodList = (props) => {
             </List>
           </Grid>
         </Grid>
-        <Grid container>
-          <Grid item xs={12} md={3} lg={3}>
-            <List component="nav" aria-label="mailbox folders">
-              <ListItem>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    Salary
+        {
+          <Grid container>
+            <Grid item xs={12} md={3} lg={3}>
+              <List component="nav" aria-label="mailbox folders">
+                <ListItem>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      Salary
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="standard-basic"
+                        label="Enter Min"
+                        fullWidth={true}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        id="standard-basic"
+                        label="Enter Max"
+                        fullWidth={true}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-basic"
-                      label="Enter Min"
-                      fullWidth={true}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-basic"
-                      label="Enter Max"
-                      fullWidth={true}
-                    />
-                  </Grid>
-                </Grid>
-              </ListItem>
-              <Divider />
-              <ListItem divider>
-                <Autocomplete
-                  id="combo-box-demo"
-                  options={users}
-                  getOptionLabel={(option) => option.name}
-                  fullWidth
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Select Names"
-                      variant="outlined"
-                    />
-                  )}
-                />
-              </ListItem>
-            </List>
-          </Grid>
-          <Grid item xs={12} md={9} lg={9}>
-            <Paper>
-              <Table size="small">
-                <TableHead>
-                  <Button variant="contained" onClick={() => navigate("/placesearch")}>
-                    Place order
-                  </Button>
+                </ListItem>
+                <Divider />
+                <ListItem divider>
+                  <Autocomplete
+                    id="combo-box-demo"
+                    options={users}
+                    getOptionLabel={(option) => option.name}
+                    fullWidth
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Names"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                </ListItem>
+              </List>
+            </Grid>
+            <Grid item xs={12} md={9} lg={9}>
+              <Paper>
+                <Table size="small">
+                  <TableHead>
+                    <Button variant="contained" onClick={() => navigate("/placesearch")}>
+                      Place order
+                    </Button>
 
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  <TableRow>
-                    <TableCell> Index</TableCell>
-                    <TableCell> Item</TableCell>
-                    <TableCell>Price</TableCell>
-                    <TableCell>Rating</TableCell>
-                    <TableCell>Type</TableCell>
-                    <TableCell>Canteen</TableCell>
-                    <TableCell>Add on 1</TableCell>
-                    <TableCell>Add on 2</TableCell>
-                    <TableCell>Add on 3</TableCell>
-                    <TableCell>Add on 4</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {users.map((user, ind) => (
-                    <TableRow key={ind}>
-                      <TableCell>{ind}</TableCell>
-                      <TableCell>{user.item}</TableCell>
-                      <TableCell>{user.price}</TableCell>
-                      <TableCell>{user.rating}</TableCell>
-                      <TableCell>{user.type}</TableCell>
-                      <TableCell>{user.canteen1}</TableCell>
-                      <TableCell>{user.add_on1}</TableCell>
-                      <TableCell>{user.add_on2}</TableCell>
-                      <TableCell>{user.add_on3}</TableCell>
-                      <TableCell>{user.add_on4}</TableCell>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <TableRow>
+                      <TableCell> Index</TableCell>
+                      <TableCell> Item</TableCell>
+                      <TableCell>Price</TableCell>
+                      <TableCell>Rating</TableCell>
+                      <TableCell>Type</TableCell>
+                      <TableCell>Canteen</TableCell>
+                      <TableCell>Add on 1</TableCell>
+                      <TableCell>Add on 2</TableCell>
+                      <TableCell>Add on 3</TableCell>
+                      <TableCell>Add on 4</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Paper>
-            <br />
+                  </TableHead>
+                  {searchText !== "" &&
+                    <>
+                      <TableBody>
+                        {users.map((user, ind) => (
+                          <TableRow key={ind}>
+                            {user.item.includes(searchText) &&
+                              <>
+                                <TableCell>{ind}</TableCell>
+                                <TableCell>{user.item}</TableCell>
+                                <TableCell>{user.price}</TableCell>
+                                <TableCell>{user.rating}</TableCell>
+                                <TableCell>{user.type}</TableCell>
+                                <TableCell>{user.canteen1}</TableCell>
+                                <TableCell>{user.add_on1}</TableCell>
+                                <TableCell>{user.add_on2}</TableCell>
+                                <TableCell>{user.add_on3}</TableCell>
+                                <TableCell>{user.add_on4}</TableCell>
+                              </>
+                            }
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </>
+                  }
+                  {searchText === "" &&
+                    <>
+                      <TableBody>
+                        {users.map((user, ind) => (
+                          <TableRow key={ind}>
+                            
+                              <>
+                                <TableCell>{ind}</TableCell>
+                                <TableCell>{user.item}</TableCell>
+                                <TableCell>{user.price}</TableCell>
+                                <TableCell>{user.rating}</TableCell>
+                                <TableCell>{user.type}</TableCell>
+                                <TableCell>{user.canteen1}</TableCell>
+                                <TableCell>{user.add_on1}</TableCell>
+                                <TableCell>{user.add_on2}</TableCell>
+                                <TableCell>{user.add_on3}</TableCell>
+                                <TableCell>{user.add_on4}</TableCell>
+                              </>
+                            
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </>
+                  }
+                </Table>
+              </Paper>
+              <br />
+            </Grid>
           </Grid>
-        </Grid>
+        }
       </div>
     </>
   );
