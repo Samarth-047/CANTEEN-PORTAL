@@ -40,6 +40,9 @@ const Register = (props) => {
   const [canteen2, setcanteen2] = React.useState(data.canteen1);
   const [price, setprice] = React.useState(data.price);
   const [email, setemail] = React.useState(Data.email);
+  const [name, setname] = React.useState(Data.name);
+  const [batch, setbatch] = React.useState(Data.year);
+  const [age, setage] = React.useState(Data.age);
   const handleChange = (event) => {
     setadd_on(event.target.value);
   };
@@ -51,6 +54,15 @@ const Register = (props) => {
 
   const onChangeemail = (event) => {
     setemail(event.target.value);
+  };
+  const onChangename = (event) => {
+    setname(event.target.value);
+  };
+  const onChangebatch = (event) => {
+    setbatch(event.target.value);
+  };
+  const onChangeage = (event) => {
+    setage(event.target.value);
   };
 
   const onChangecanteen2 = (event) => {
@@ -80,8 +92,13 @@ const Register = (props) => {
     var data3 = "Placed";
     setData(data.canteen1
     );
-    setdata(Data.email
-      );
+    setdata({
+      email: Data.email,
+      name: Data.name,
+      year: Data.year,
+      age:Data.year,
+    });
+    
     const newUser1 = {
       item: item,
       canteen2: canteen2,
@@ -91,7 +108,12 @@ const Register = (props) => {
       quantity: quantity,
       status:data3,
       email:email,
+      name: name,
+      batch: batch,
+      age: age,
     };
+    
+    console.log(newUser1.name);
     axios
       .post("http://localhost:4000/buyfood/buy_reg", newUser1)
       .then((response) => {
@@ -121,6 +143,9 @@ const Register = (props) => {
             </Button>
             <Button color="inherit" onClick={() => navigate("/profile")}>
               My Profile
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/wallet")}>
+              wallet
             </Button>
             <Button color="inherit" onClick={() => navigate("/login")}>
               Log Out

@@ -25,7 +25,10 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { id } from "date-fns/locale";
+import emailjs from '@emailjs/browser';
+import{ init } from '@emailjs/browser';
+init("user_2b0gwsaQeWb2vIt7SULPn");
+
 
 const FoodList = (props) => {
 
@@ -35,6 +38,8 @@ const FoodList = (props) => {
     const [sortName, setSortName] = useState(true);
     const [searchText, setSearchText] = useState("");
     const [checker, setch] = React.useState(data.canteen);
+    var tr=JSON.parse(localStorage.getItem("user"));
+
 
 
 
@@ -45,6 +50,7 @@ const FoodList = (props) => {
         setch(data.canteen);
         console.log(checker);
         console.log(data);
+
         axios
             .get("http://localhost:4000/buyfood")
             .then((response) => {
@@ -60,35 +66,54 @@ const FoodList = (props) => {
     }, []);
 
     const navigate = useNavigate();
-    const onreject = ({ id }) => {
+    const onreject = ({ id,name }) => {
         const status = "REJECTED";
         const newUser = {
             id: id,
             status: status,
+            name:name,
         };
 
         axios
             .post("http://localhost:4000/buyfood/status_update", newUser)
             .then((response) => {
+                console.log(response.data.name);
+                console.log(tr);
                 // alert("Created\t" + response.data.name);
+                emailjs.send("service_9zcyb3r","template_csj0yii",{
+                    to_name: response.data.name,
+                    from_name: tr.name,
+                    message: "Accepted",
+                    });
+                
                 console.log(response.data);
                 window.location.reload(false);
             });
 
 
     };
-    const onaccept = ({ id }) => {
+    const onaccept = ({ id,name }) => {
         const status = "ACCEPTED";
         const newUser = {
             id: id,
             status: status,
-        };
+            name: name,
 
+        };
+        console.log(JSON.parse(localStorage.getItem("user")));
         axios
             .post("http://localhost:4000/buyfood/status_update", newUser)
             .then((response) => {
                 // alert("Created\t" + response.data.name);
-                console.log(response.data);
+
+                console.log(response.data.name);
+                console.log(tr.name);
+                emailjs.send("service_9zcyb3r","template_csj0yii",{
+                    to_name: response.data.name,
+                    from_name: tr.name,
+                    message: "Accepted",
+                    });
+                // console.log(response.data);
                 window.location.reload(false);
             });
 
@@ -109,7 +134,7 @@ const FoodList = (props) => {
         axios
             .post("http://localhost:4000/buyfood/status_update", newUser)
             .then((response) => {
-                // alert("Created\t" + response.data.name);
+                alert("Created\t" + response.data.name);
                 console.log(response.data);
                 window.location.reload(false);
             });
@@ -169,83 +194,13 @@ const FoodList = (props) => {
             <br />
             <div>
                 <Grid container>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <List component="nav" aria-label="mailbox folders">
-                            <ListItem text>
-                                <h1>Filters</h1>
-                            </ListItem>
-                        </List>
-                    </Grid>
-                    <Grid item xs={12} md={9} lg={9}>
-                        <List component="nav" aria-label="mailbox folders">
-                            <TextField
-                                id="standard-basic"
-                                label="Search"
-                                fullWidth={true}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment>
-                                            <IconButton>
-                                                <SearchIcon />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            // onChange={customFunction}
-                            />
-                        </List>
-                    </Grid>
-                </Grid>
-                <Grid container>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <List component="nav" aria-label="mailbox folders">
-                            <ListItem>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12}>
-                                        Salary
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            id="standard-basic"
-                                            label="Enter Min"
-                                            fullWidth={true}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            id="standard-basic"
-                                            label="Enter Max"
-                                            fullWidth={true}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </ListItem>
-                            <Divider />
-                            <ListItem divider>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    options={users}
-                                    getOptionLabel={(option) => option.name}
-                                    fullWidth
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label="Select Names"
-                                            variant="outlined"
-                                        />
-                                    )}
-                                />
-                            </ListItem>
-                        </List>
-                    </Grid>
-                    <Grid item xs={12} md={9} lg={9}>
+                    <Grid item xs={12} md={13} lg={13}>
                         <Paper>
                             <Table size="small">
                                 <TableHead>
                                     <br />
                                     <br />
-                                    <br />
-                                    <br />
+                                    
                                     <TableRow>
                                         <TableCell> Index</TableCell>
                                         <TableCell> Item</TableCell>
@@ -256,6 +211,8 @@ const FoodList = (props) => {
                                         <TableCell>Total</TableCell>
                                         <TableCell>email</TableCell>
                                         <TableCell>status</TableCell>
+                                        <TableCell>batch</TableCell>
+                                        <TableCell>age</TableCell>
                                         <TableCell>view</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -273,20 +230,22 @@ const FoodList = (props) => {
                                                     <TableCell>{user.total}</TableCell>
                                                     <TableCell>{user.email}</TableCell>
                                                     <TableCell>{user.status}</TableCell>
+                                                    <TableCell>{user.batch}</TableCell>
+                                                    <TableCell>{user.age}</TableCell>
                                                     <TableCell>
                                                         {user.status === "Placed" &&
                                                             <>
-                                                                <Button color="success" onClick={() => onaccept({ id: user._id })}>
+                                                                <Button variant="contained" color="success" onClick={() => onaccept({ id: user._id,name: user.name })}>
                                                                     ACCEPT
                                                                 </Button>
-                                                                <Button color="success" onClick={() => onreject({ id: user._id })}>
+                                                                <Button variant="contained" color="error" onClick={() => onreject({ id: user._id,name: user.name })}>
                                                                     REJECT
                                                                 </Button>
                                                             </>
                                                         }
                                                         {user.status !== "Placed" && user.status !== "REJECTED" && user.status !== "DELIVERED" && user.status !== "READY FOR PICKUP" &&
                                                             <>
-                                                                <Button color="success" onClick={() => onchanger({id:user._id, status: user.status })}>
+                                                                <Button variant="contained" color="success" onClick={() => onchanger({id:user._id, status: user.status })}>
                                                                     NEXT STEP
                                                                 </Button>
                                                             </>

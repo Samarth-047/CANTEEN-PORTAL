@@ -221,6 +221,20 @@ const Register = (props) => {
               }}
             />
           </Grid>
+          <Grid item xs={12} >
+            <FormControl sx={{ m: 1, width: 300 }}>
+              <InputLabel id="demo-simple-select-label">Type</InputLabel>
+              <Select
+                label="Person"
+                variant="outlined"
+                value={type}
+                onChange={onChangetype}
+              >
+                <MenuItem value="VEG">VEG</MenuItem>
+                <MenuItem value="NON-VEG">NON-VEG</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
           <div>
             <FormControl sx={{ m: 1, width: 300 }}>
               <InputLabel id="demo-multiple-name-label">Tags</InputLabel>

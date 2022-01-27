@@ -89,6 +89,9 @@ const Find_food = (props) => {
             <Button color="inherit" onClick={() => navigate("/cart")}>
               MY CART
             </Button>
+            <Button color="inherit" onClick={() => navigate("/wallet")}>
+              wallet
+            </Button>
             <Button color="inherit" onClick={() => navigate("/login")}>
               Log Out
             </Button>

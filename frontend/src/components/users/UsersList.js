@@ -111,94 +111,20 @@ const FoodList = (props) => {
       <br/>
       <div>
         <Grid container>
-          <Grid item xs={12} md={3} lg={3}>
-            <List component="nav" aria-label="mailbox folders">
-              <ListItem text>
-                <h1>Filters</h1>
-              </ListItem>
-            </List>
-          </Grid>
-          <Grid item xs={12} md={9} lg={9}>
-            <List component="nav" aria-label="mailbox folders">
-              <TextField
-                id="standard-basic"
-                label="Search"
-                fullWidth={true}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment>
-                      <IconButton>
-                        <SearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              // onChange={customFunction}
-              />
-            </List>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={12} md={3} lg={3}>
-            <List component="nav" aria-label="mailbox folders">
-              <ListItem>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    Salary
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-basic"
-                      label="Enter Min"
-                      fullWidth={true}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      id="standard-basic"
-                      label="Enter Max"
-                      fullWidth={true}
-                    />
-                  </Grid>
-                </Grid>
-              </ListItem>
-              <Divider />
-              <ListItem divider>
-                <Autocomplete
-                  id="combo-box-demo"
-                  options={users}
-                  getOptionLabel={(option) => option.name}
-                  fullWidth
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Select Names"
-                      variant="outlined"
-                    />
-                  )}
-                />
-              </ListItem>
-            </List>
-          </Grid>
-          <Grid item xs={12} md={9} lg={9}>
+          <Grid item xs={12} md={13} lg={13}>
             <Paper>
               <Table size="small">
                 <TableHead>
                   <Button variant="contained" onClick={() => navigate("/foodreg")}>
                     add to the menu
                   </Button>
-                  <br />
-                  <br />
+
                   <Button variant="contained" onClick={() => navigate("/food_edit_search")}>
                     Edit food item
                   </Button>
-                  <br />
-                  <br />
                   <Button variant="contained" onClick={() => navigate("/food_delete_search")}>
                     Delete Food item
                   </Button>
-                  <br />
-                  <br />
                   <Button variant="contained" onClick={() => navigate("/view")}>
                     View Order
                   </Button>

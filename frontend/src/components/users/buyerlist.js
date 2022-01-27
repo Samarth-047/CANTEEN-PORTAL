@@ -25,12 +25,45 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { useTheme } from '@mui/material/styles';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 const FoodList = (props) => {
   const [users, setUsers] = useState([]);
   const [sortedUsers, setSortedUsers] = useState([]);
   const [sortName, setSortName] = useState(true);
   const [searchText, setSearchText] = useState("");
+  const [min, set1] = useState("1");
+  const [max, set2] = useState("50000");
+  const [data, setUpdateData] = React.useState(JSON.parse(localStorage.getItem("user")));
+  const [shop, setshop] = React.useState([]);
+  const [rating, setrating] = useState("");
+  const [tags, settags] = useState("");
+  const [type, settype] = useState("");
+  const theme = useTheme();
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
+  const names = [
+    'JC',
+    'VC',
+    'BBC',
+  ];
+  const onChangetype = (event) => {
+    settype(event.target.value);
+  };
 
   useEffect(() => {
     axios
@@ -47,7 +80,9 @@ const FoodList = (props) => {
 
   const navigate = useNavigate();
 
-
+  const onChangetags = (event) => {
+    settags(event.target.value);
+  };
   const sortChange = () => {
     let usersTemp = users;
     const flag = sortName;
@@ -62,9 +97,44 @@ const FoodList = (props) => {
     setSortName(!sortName);
   };
 
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setshop(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+
+  };
+  const handleChange1 = (event) => {
+    console.log(min);
+    set1(event.target.value);
+  }
+  const handleChange2 = (event) => {
+    console.log(max);
+
+    set2(event.target.value);
+  }
+  function getStyles(name, shop, theme) {
+    return {
+      fontWeight:
+        shop.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
+
   const customFunction = (event) => {
     console.log(event.target.value);
     setSearchText(event.target.value);
+  };
+  const reffresher = () => {
+    window.location.reload(false);
+  };
+  const rating_ = (event) => {
+    console.log(event.target.value);
+    setrating(event.target.value);
   };
 
   return (
@@ -90,6 +160,12 @@ const FoodList = (props) => {
             <Button color="inherit" onClick={() => navigate("/cart")}>
               MY CART
             </Button>
+            <Button color="inherit" onClick={() => navigate("/wallet")}>
+              ADD MONEY
+            </Button>
+            <Button color="success" variant="contained" >
+              balance: {data.wallet}
+            </Button>
             <Button color="inherit" onClick={() => navigate("/login")}>
               Log Out
             </Button>
@@ -107,7 +183,7 @@ const FoodList = (props) => {
           <Grid item xs={12} md={3} lg={3}>
             <List component="nav" aria-label="mailbox folders">
               <ListItem text>
-                <h1>Filters</h1>
+                <h2>Filters</h2>
               </ListItem>
             </List>
           </Grid>
@@ -140,40 +216,92 @@ const FoodList = (props) => {
                 <ListItem>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      Salary
+                      Rate
                     </Grid>
                     <Grid item xs={6}>
                       <TextField
                         id="standard-basic"
-                        label="Enter Min"
+                        label="Enter Min price"
                         fullWidth={true}
+                        defaultValue={min}
+                        onChange={handleChange1}
                       />
                     </Grid>
                     <Grid item xs={6}>
                       <TextField
                         id="standard-basic"
-                        label="Enter Max"
+                        label="Enter Max price"
                         fullWidth={true}
+                        defaultValue={max}
+                        onChange={handleChange2}
                       />
                     </Grid>
                   </Grid>
                 </ListItem>
                 <Divider />
-                <ListItem divider>
-                  <Autocomplete
-                    id="combo-box-demo"
-                    options={users}
-                    getOptionLabel={(option) => option.name}
-                    fullWidth
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Select Names"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                </ListItem>
+                <FormControl sx={{ m: 1, width: 450 }}>
+                  <InputLabel id="demo-multiple-name-label">Shop</InputLabel>
+                  <Select
+                    labelId="demo-multiple-name-label"
+                    id="demo-multiple-name"
+                    multiple
+                    value={shop}
+                    onChange={handleChange}
+                    input={<OutlinedInput label="Name" />}
+                    MenuProps={MenuProps}
+                  >
+                    {names.map((name) => (
+                      <MenuItem
+                        key={name}
+                        value={name}
+                        style={getStyles(name, shop, theme)}
+                      >
+                        {name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Divider />
+                <Grid item xs={12} >
+                  <FormControl sx={{ m: 1, width: 450 }}>
+                    <InputLabel id="demo-simple-select-label">Tags</InputLabel>
+                    <Select
+                      label="Person"
+                      variant="outlined"
+                      value={tags}
+                      onChange={onChangetags}
+                    >
+                      <MenuItem value="cheesy">cheesy</MenuItem>
+                      <MenuItem value="sweet">sweet</MenuItem>
+                      <MenuItem value="cold">cold</MenuItem>
+                      <MenuItem value="hot">hot</MenuItem>
+                      <MenuItem value="apicy">spicy</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Divider />
+                <Grid item xs={12} >
+                  <FormControl sx={{ m: 1, width: 450 }}>
+                    <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                    <Select
+                      label="type"
+                      variant="outlined"
+                      value={type}
+                      onChange={onChangetype}
+                    >
+                      <MenuItem value="VEG">VEG</MenuItem>
+                      <MenuItem value="NON-VEG">NON-VEG</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Divider />
+                <Grid item xs={12}>
+                  <FormControl sx={{ m: 1, width: 450 }}>
+                    <Button variant="contained" color="success" onClick={reffresher}>
+                      CLEAR FILTER
+                    </Button>
+                  </FormControl>
+                </Grid>
               </List>
             </Grid>
             <Grid item xs={12} md={9} lg={9}>
@@ -194,6 +322,7 @@ const FoodList = (props) => {
                       <TableCell>Price</TableCell>
                       <TableCell>Rating</TableCell>
                       <TableCell>Type</TableCell>
+                      <TableCell>Tags</TableCell>
                       <TableCell>Canteen</TableCell>
                       <TableCell>Add on 1</TableCell>
                       <TableCell>Add on 2</TableCell>
@@ -201,31 +330,32 @@ const FoodList = (props) => {
                       <TableCell>Add on 4</TableCell>
                     </TableRow>
                   </TableHead>
-                  {searchText !== "" &&
-                    <>
-                      <TableBody>
-                        {users.map((user, ind) => (
-                          <TableRow key={ind}>
-                            {user.item.includes(searchText) &&
-                              <>
-                                <TableCell>{ind}</TableCell>
-                                <TableCell>{user.item}</TableCell>
-                                <TableCell>{user.price}</TableCell>
-                                <TableCell>{user.rating}</TableCell>
-                                <TableCell>{user.type}</TableCell>
-                                <TableCell>{user.canteen1}</TableCell>
-                                <TableCell>{user.add_on1}</TableCell>
-                                <TableCell>{user.add_on2}</TableCell>
-                                <TableCell>{user.add_on3}</TableCell>
-                                <TableCell>{user.add_on4}</TableCell>
-                              </>
-                            }
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </>
-                  }
-                  {searchText === "" &&
+                  {/* {(searchText === "" || searchText !== "") && */}
+                  <>
+                    <TableBody>
+                      {users.map((user, ind) => (
+                        <TableRow key={ind}>
+                          {(searchText === "" || user.item.includes(searchText)) && (type === "" || user.type === type) && (tags === "" || user.food_tags.includes(tags)) && ((user.price >= min) && (user.price <= max)) &&
+                            <>
+                              <TableCell>{ind}</TableCell>
+                              <TableCell>{user.item}</TableCell>
+                              <TableCell>{user.price}</TableCell>
+                              <TableCell>{user.rating}</TableCell>
+                              <TableCell>{user.type}</TableCell>
+                              <TableCell>{user.food_tags}</TableCell>
+                              <TableCell>{user.canteen1}</TableCell>
+                              <TableCell>{user.add_on1}</TableCell>
+                              <TableCell>{user.add_on2}</TableCell>
+                              <TableCell>{user.add_on3}</TableCell>
+                              <TableCell>{user.add_on4}</TableCell>
+                            </>
+                          }
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </>
+                  {/* } */}
+                  {/* { &&
                     <>
                       <TableBody>
                         {users.map((user, ind) => (
@@ -248,7 +378,7 @@ const FoodList = (props) => {
                         ))}
                       </TableBody>
                     </>
-                  }
+                  } */}
                 </Table>
               </Paper>
               <br />

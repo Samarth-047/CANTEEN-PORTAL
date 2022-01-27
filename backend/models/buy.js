@@ -3,7 +3,19 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const buyschema = new Schema({
+	name: {
+		type: String,
+		required: false
+	},
 	item: {
+		type: String,
+		required: false
+	},
+	batch: {
+		type: String,
+		required: false
+	},
+	age: {
 		type: String,
 		required: false
 	},

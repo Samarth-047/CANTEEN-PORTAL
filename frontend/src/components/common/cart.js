@@ -40,8 +40,16 @@ const FoodList = (props) => {
 
 
     useEffect(() => {
-        setData(data.email
-        );
+        setData({
+            name: data.name,
+            email: data.email,
+            contact_number: data.contact_number,
+            type: data.type,
+            year: data.year,
+            age: data.age,
+            batch_number: data.batch_number,
+            wallet: data.wallet,
+          });
         setch(data.email);
         console.log(checker);
         console.log(data);
@@ -60,7 +68,7 @@ const FoodList = (props) => {
     }, []);
 
     const navigate = useNavigate();
-    
+
 
     const onchanger = ({ id, status }) => {
 
@@ -124,6 +132,12 @@ const FoodList = (props) => {
                         <Button color="inherit" onClick={() => navigate("/cart")}>
                             MY CART
                         </Button>
+                        <Button color="inherit" onClick={() => navigate("/wallet")}>
+                            ADD MONEY
+                        </Button>
+                        <Button color="success" variant="contained" >
+                            balance: {data.wallet}
+                        </Button>
                         <Button color="inherit" onClick={() => navigate("/login")}>
                             Log Out
                         </Button>
@@ -137,77 +151,9 @@ const FoodList = (props) => {
             <br />
             <br />
             <div>
+                
                 <Grid container>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <List component="nav" aria-label="mailbox folders">
-                            <ListItem text>
-                                <h1>Filters</h1>
-                            </ListItem>
-                        </List>
-                    </Grid>
-                    <Grid item xs={12} md={9} lg={9}>
-                        <List component="nav" aria-label="mailbox folders">
-                            <TextField
-                                id="standard-basic"
-                                label="Search"
-                                fullWidth={true}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment>
-                                            <IconButton>
-                                                <SearchIcon />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            // onChange={customFunction}
-                            />
-                        </List>
-                    </Grid>
-                </Grid>
-                <Grid container>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <List component="nav" aria-label="mailbox folders">
-                            <ListItem>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12}>
-                                        Salary
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            id="standard-basic"
-                                            label="Enter Min"
-                                            fullWidth={true}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            id="standard-basic"
-                                            label="Enter Max"
-                                            fullWidth={true}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </ListItem>
-                            <Divider />
-                            <ListItem divider>
-                                <Autocomplete
-                                    id="combo-box-demo"
-                                    options={users}
-                                    getOptionLabel={(option) => option.name}
-                                    fullWidth
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label="Select Names"
-                                            variant="outlined"
-                                        />
-                                    )}
-                                />
-                            </ListItem>
-                        </List>
-                    </Grid>
-                    <Grid item xs={12} md={9} lg={9}>
+                    <Grid item xs={12} md={13} lg={13}>
                         <Paper>
                             <Table size="small">
                                 <TableHead>
@@ -245,14 +191,14 @@ const FoodList = (props) => {
                                                     <TableCell>
                                                         {user.status === "READY FOR PICKUP" &&
                                                             <>
-                                                                <Button color="inherit" onClick={() => onchanger({id:user._id, status: user.status })}>
+                                                                <Button color="inherit" onClick={() => onchanger({ id: user._id, status: user.status })}>
                                                                     PICKUP
                                                                 </Button>
                                                             </>
                                                         }
                                                     </TableCell>
                                                 </>
-                                            } 
+                                            }
                                         </TableRow>
                                     ))}
                                 </TableBody>

@@ -51,6 +51,10 @@ const UserSchema = new Schema({
 		type: String,
 		required: false
 	},
+	wallet: {
+		type: String,
+		required: false
+	},
 });
 
 

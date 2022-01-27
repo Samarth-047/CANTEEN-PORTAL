@@ -39,6 +39,7 @@ const Register = (props) => {
   const [canteen_open, setcanteen_open] = useState("");
   const [canteen_close, setcanteen_close] = useState("");
   const [password, setpassword] = useState("");
+  const [wallet, setwallet] = useState("00");
   const navigate = useNavigate();
   const [values, setValues] = React.useState({
     showPassword: false,
@@ -73,6 +74,9 @@ const Register = (props) => {
 
   const onChangecanteen = (event) => {
     setcanteen(event.target.value);
+  };
+  const onChangewallet = (event) => {
+    setwallet(event.target.value);
   };
 
   const onChangeyear = (event) => {
@@ -113,6 +117,7 @@ const Register = (props) => {
     setcanteen_open("");
     setValues("");
     setpassword("");
+    setwallet("");
   };
 
   const onSubmitseller = (event) => {
@@ -128,6 +133,7 @@ const Register = (props) => {
       canteen_open: canteen_open,
       canteen_close: canteen_close,
       password: password,
+      wallet:wallet,
     };
     console.log(newUser1);
     axios

@@ -36,6 +36,7 @@ router.post("/register", async (req, res) => {
         canteen_open:req.body.canteen_open,
         canteen_close:req.body.canteen_close,
         password:passwordHash,
+        wallet:req.body.wallet,
     });
     console.log(newUser);
     newUser.save()
@@ -73,6 +74,21 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/profile", (req, res) => {
+    var newUserData = req.body;
+    console.log(newUserData);
+	// Find user by email
+	User.findOneAndUpdate({ email:newUserData.email },
+        newUserData, {upsert:true}, (err, user)=> {
+           if (err) {console.log(err)} 
+           else {
+            //    console.log('func: ', user);
+            res.status(200).json(newUserData);
+               return newUserData;
+           } 
+        });
+    
+});
+router.post("/wallet", (req, res) => {
     var newUserData = req.body;
     console.log(newUserData);
 	// Find user by email

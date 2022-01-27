@@ -127,6 +127,12 @@ export default function Profile() {
                 <Button color="inherit" onClick={() => navigate("/cart")}>
                   MY CART
                 </Button>
+                <Button color="inherit" onClick={() => navigate("/wallet")}>
+                  ADD MONEY
+                </Button>
+                <Button color="success" variant="contained" >
+                  balance: {data.wallet}
+                </Button>
                 <Button color="inherit" onClick={() => navigate("/login")}>
                   Log Out
                 </Button>

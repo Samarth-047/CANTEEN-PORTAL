@@ -19,12 +19,15 @@ router.post("/buy_reg", async (req, res) => {
     const newUser = new buy({
         item: req.body.item,
         price: req.body.price,
+        name: req.body.name,
         canteen2: req.body.canteen2,
         quantity: req.body.quantity,
         total: req.body.total,
         add_on: req.body.add_on,
         status: req.body.status,
         email: req.body.email,
+        age: req.body.age,
+        batch: req.body.batch,
     });
     console.log(newUser);
     newUser.save()
@@ -38,6 +41,7 @@ router.post("/buy_reg", async (req, res) => {
 router.post("/status_update", (req, res) => {
     var id = req.body.id;
     var status = req.body.status;
+    var st=req.body;
     console.log(req.body);
     // Find user by email
     buy.findOneAndUpdate({_id: id }, 
@@ -47,7 +51,7 @@ router.post("/status_update", (req, res) => {
         }
         else{
             console.log("Original Doc : ",docs);
-            res.status(200).json(status);
+            res.status(200).json(st);
         }
     });
 });

@@ -16,6 +16,8 @@ import Buyer_list from "./components/users/buyerlist";
 import Placesearch from "./components/common/placesearch";
 import View from "./components/common/view_order";
 import Cart from "./components/common/cart";
+import Stats from "./components/common/stats";
+import Wallet from "./components/common/wallet";
 
 const Layout = () => {
   return (
@@ -47,6 +49,8 @@ function App() {
           <Route path="buyer" element={<Buyer_list />} />
           <Route path="view" element={<View />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="stats" element={<Stats />} />
+          <Route path="wallet" element={<Wallet />} />
         </Route>
       </Routes>
     </BrowserRouter>
