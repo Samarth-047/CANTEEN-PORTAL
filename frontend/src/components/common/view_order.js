@@ -26,9 +26,9 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import emailjs from '@emailjs/browser';
-import{ init } from '@emailjs/browser';
+import { init } from '@emailjs/browser';
 init("user_2b0gwsaQeWb2vIt7SULPn");
-
+var ct = 0;
 
 const FoodList = (props) => {
 
@@ -38,7 +38,7 @@ const FoodList = (props) => {
     const [sortName, setSortName] = useState(true);
     const [searchText, setSearchText] = useState("");
     const [checker, setch] = React.useState(data.canteen);
-    var tr=JSON.parse(localStorage.getItem("user"));
+    var tr = JSON.parse(localStorage.getItem("user"));
 
 
 
@@ -66,57 +66,79 @@ const FoodList = (props) => {
     }, []);
 
     const navigate = useNavigate();
-    const onreject = ({ id,name }) => {
+    const onreject = ({ id, name,email,total }) => {
         const status = "REJECTED";
         const newUser = {
             id: id,
             status: status,
-            name:name,
+            name: name,
         };
-
         axios
             .post("http://localhost:4000/buyfood/status_update", newUser)
             .then((response) => {
                 console.log(response.data.name);
                 console.log(tr);
                 // alert("Created\t" + response.data.name);
-                emailjs.send("service_9zcyb3r","template_csj0yii",{
+                emailjs.send("service_9zcyb3r", "template_csj0yii", {
                     to_name: response.data.name,
                     from_name: tr.name,
                     message: "Accepted",
-                    });
-                
+                });
+
                 console.log(response.data);
                 window.location.reload(false);
             });
-
-
-    };
-    const onaccept = ({ id,name }) => {
-        const status = "ACCEPTED";
-        const newUser = {
-            id: id,
-            status: status,
-            name: name,
-
-        };
-        console.log(JSON.parse(localStorage.getItem("user")));
-        axios
-            .post("http://localhost:4000/buyfood/status_update", newUser)
+            const newUser1 = {
+                id: id,
+                status: status,
+                name: name,
+                email:email,
+                total:total
+            };
+            axios
+            .post("http://localhost:4000/user/100pipers", newUser1)
             .then((response) => {
-                // alert("Created\t" + response.data.name);
-
-                console.log(response.data.name);
-                console.log(tr.name);
-                emailjs.send("service_9zcyb3r","template_csj0yii",{
-                    to_name: response.data.name,
-                    from_name: tr.name,
-                    message: "Accepted",
-                    });
-                // console.log(response.data);
-                window.location.reload(false);
+              alert(response.data);
+              console.log(response.data);
             });
 
+    };
+    const onaccept = ({ id, name }) => {
+        {
+            users.forEach((user, ind) => {
+                if (user.status === "ACCEPTED" || user.status === "COOKING") {
+                    ct++;
+                }
+            })
+        };
+        if (ct >= 10) {
+            alert("maximum limit reached");
+        }
+        else {
+            const status = "ACCEPTED";
+            const newUser = {
+                id: id,
+                status: status,
+                name: name,
+
+            };
+            console.log(JSON.parse(localStorage.getItem("user")));
+            axios
+                .post("http://localhost:4000/buyfood/status_update", newUser)
+                .then((response) => {
+                    // alert("Created\t" + response.data.name);
+
+                    console.log(response.data.name);
+                    console.log(tr.name);
+                    emailjs.send("service_9zcyb3r", "template_csj0yii", {
+                        to_name: response.data.name,
+                        from_name: tr.name,
+                        message: "Accepted",
+                    });
+                    // console.log(response.data);
+                    window.location.reload(false);
+                });
+        }
     };
     const onchanger = ({ id, status }) => {
 
@@ -200,7 +222,7 @@ const FoodList = (props) => {
                                 <TableHead>
                                     <br />
                                     <br />
-                                    
+
                                     <TableRow>
                                         <TableCell> Index</TableCell>
                                         <TableCell> Item</TableCell>
@@ -235,17 +257,17 @@ const FoodList = (props) => {
                                                     <TableCell>
                                                         {user.status === "Placed" &&
                                                             <>
-                                                                <Button variant="contained" color="success" onClick={() => onaccept({ id: user._id,name: user.name })}>
+                                                                <Button variant="contained" color="success" onClick={() => onaccept({ id: user._id, name: user.name })}>
                                                                     ACCEPT
                                                                 </Button>
-                                                                <Button variant="contained" color="error" onClick={() => onreject({ id: user._id,name: user.name })}>
+                                                                <Button variant="contained" color="error" onClick={() => onreject({ id: user._id,total:user.total,email:user.email, name: user.name })}>
                                                                     REJECT
                                                                 </Button>
                                                             </>
                                                         }
                                                         {user.status !== "Placed" && user.status !== "REJECTED" && user.status !== "DELIVERED" && user.status !== "READY FOR PICKUP" &&
                                                             <>
-                                                                <Button variant="contained" color="success" onClick={() => onchanger({id:user._id, status: user.status })}>
+                                                                <Button variant="contained" color="success" onClick={() => onchanger({ id: user._id, status: user.status })}>
                                                                     NEXT STEP
                                                                 </Button>
                                                             </>

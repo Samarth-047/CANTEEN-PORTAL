@@ -215,20 +215,15 @@ const FoodList = (props) => {
                 {console.log(freq1)}
                 {console.log(freq2)}
                 <Grid>
-                    <p style={{ display: 'flex' }}>&emsp; BATCH VS ORDERS COMPLETED</p>
+                    <h1>BATCH VS ORDERS COMPLETED</h1>
                     <Grid spacing={1} direction='column' style={{ alignContent: "center" }}>
-                        <Chart style={{ height: "100px", width: "500px", alignContent: "center" }} data={data1}>
+                        <Chart style={{ height: "100px", width: "500px"}} data={data1}>
                             <ArgumentAxis>
                             </ArgumentAxis>
-                            <ValueAxis>
-                                scale name="discrete"
-                                discreteTicks
-                                discreteTickCount={5}
-                                discreteTickStep={10}
-                            </ValueAxis>
+                            <ValueAxis />
                             <BarSeries valueField="value" argumentField="argument" />
                         </Chart>
-                        <p style={{ display: 'flex' }}>&emsp; AGE VS ORDERS COMPLETED</p>
+                        <h1>AGE VS ORDERS COMPLETED</h1>
                         <Chart style={{ height: "100px", width: "500px" }} data={data2}
                         >
                             <ArgumentAxis />

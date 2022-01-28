@@ -78,7 +78,7 @@ const Find_food = (props) => {
               Canteen Portal
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
-            <Button color="inherit" onClick={() => navigate("/users")}>
+            <Button color="inherit" onClick={() => navigate("/buyer")}>
               Shop
             </Button>
             <Button color="inherit" onClick={() => navigate("/register")}>

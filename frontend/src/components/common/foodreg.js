@@ -67,7 +67,12 @@ const Register = (props) => {
   };
 
   const onChangeprice = (event) => {
+    if(parseInt(event.target.value)>0){
     setprice(event.target.value);
+    }
+    else{
+      alert("Invalid price entered");
+    }
   };
 
   const onChangerating = (event) => {
@@ -103,6 +108,26 @@ const Register = (props) => {
     );
   };
 
+  const handleChange1 = (event) => {
+   
+
+    setadd_on1(event.target.value);
+  };
+  const handleChange2 = (event) => {
+    console.log(event.target.value);
+
+    setadd_on2(event.target.value);
+  };
+  const handleChange3 = (event) => {
+    console.log(event.target.value);
+
+    setadd_on3(event.target.value);
+  };
+  const handleChange4 = (event) => {
+    console.log(event.target.value);
+
+    setadd_on4(event.target.value);
+  };
   function refreshPage() {
     window.location.reload(false);
   };
@@ -137,6 +162,8 @@ const Register = (props) => {
       add_on2: add_on2,
       add_on3: add_on3,
       add_on4: add_on4,
+      canteen_open:data.canteen_open,
+      canteen_close:data.canteen_close,
     };
     console.log(newUser1);
     console.log(data);
@@ -261,36 +288,80 @@ const Register = (props) => {
           </div>
         </Grid>
         <Grid item xs={12} style={{ minWidth: 225 }}>
-          <TextField
-            label="Add on 1"
-            variant="outlined"
-            value={add_on1}
-            onChange={onChangeadd_on1}
-          />
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 230 }}>
+            <InputLabel id="demo-simple-select-standard-label">Add on 1</InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={add_on1}
+              onChange={handleChange1}
+              label="Age"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="extra masala,10">extra masala</MenuItem>
+              <MenuItem value="extra cheese,10">extra cheese</MenuItem>
+              <MenuItem value="extra butter,10">extra butter</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12} style={{ minWidth: 225 }}>
-          <TextField
-            label="Add on 2"
-            variant="outlined"
-            value={add_on2}
-            onChange={onChangeadd_on2}
-          />
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 230 }}>
+            <InputLabel id="demo-simple-select-standard-label">Add on 2</InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={add_on2}
+              onChange={handleChange2}
+              label="Age"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="extra masala,10">extra masala</MenuItem>
+              <MenuItem value="extra cheese,10">extra cheese</MenuItem>
+              <MenuItem value="extra butter,10">extra butter</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12} style={{ minWidth: 225 }}>
-          <TextField
-            label="Add on 3"
-            variant="outlined"
-            value={add_on3}
-            onChange={onChangeadd_on3}
-          />
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 230 }}>
+            <InputLabel id="demo-simple-select-standard-label">Add on 3</InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={add_on3}
+              onChange={handleChange3}
+              label="Age"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="extra masala,10">extra masala</MenuItem>
+              <MenuItem value="extra cheese,10">extra cheese</MenuItem>
+              <MenuItem value="extra butter,10">extra butter</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12} style={{ minWidth: 225 }}>
-          <TextField
-            label="Add on 4"
-            variant="outlined"
-            value={add_on4}
-            onChange={onChangeadd_on4}
-          />
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 230 }}>
+            <InputLabel id="demo-simple-select-standard-label">Add on 4</InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={add_on4}
+              onChange={handleChange4}
+              label="Age"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="extra masala,10">extra masala</MenuItem>
+              <MenuItem value="extra cheese,10">extra cheese</MenuItem>
+              <MenuItem value="extra butter,10">extra butter</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={12}>
           <Button variant="contained" onClick={onSubmitfood}>

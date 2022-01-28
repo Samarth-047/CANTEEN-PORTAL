@@ -37,7 +37,7 @@ export default function Profile() {
   var wallet=null;
   
   const handleChange = (prop) => (event) => {
-    if (data.wallet === null) {      
+    if (data.wallet === "0") {      
       setUpdateData({ ...updateData, [prop]: event.target.value });
     }
     else {

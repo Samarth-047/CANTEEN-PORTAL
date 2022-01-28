@@ -28,14 +28,16 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
 var extra = "0";
+var ch = 0;
 
 const Register = (props) => {
   const navigate = useNavigate();
+
   const [data, setData] = React.useState(JSON.parse(localStorage.getItem("order")));
   const [Data, setdata] = React.useState(JSON.parse(localStorage.getItem("user")));
   const [item, setitem] = React.useState(data.item);
   const [quantity, setquantity] = useState("");
-  const [total, settotal] = useState("");
+  const [total, settotal] = useState("0");
   const [add_on, setadd_on] = React.useState('');
   const [canteen2, setcanteen2] = React.useState(data.canteen1);
   const [price, setprice] = React.useState(data.price);
@@ -43,8 +45,21 @@ const Register = (props) => {
   const [name, setname] = React.useState(Data.name);
   const [batch, setbatch] = React.useState(Data.year);
   const [age, setage] = React.useState(Data.age);
+  var tr = "0";
+
+
   const handleChange = (event) => {
-    setadd_on(event.target.value);
+
+    if (ch == 0) {
+      console.log(ch);
+      settotal(parseInt(total) + parseInt(event.target.value.split(",")[1]));
+      setadd_on(event.target.value);
+      ch = 1;
+    }
+    else {
+      console.log(ch);
+      setadd_on(event.target.value);
+    }
   };
   const [status, setstatus] = useState("");
 
@@ -64,12 +79,12 @@ const Register = (props) => {
   const onChangeage = (event) => {
     setage(event.target.value);
   };
-
   const onChangecanteen2 = (event) => {
     setcanteen2(event.target.value);
   };
-
   const onChangequantity = (event) => {
+
+    settotal(data.price * event.target.value);
     setquantity(event.target.value);
   };
 
@@ -88,40 +103,73 @@ const Register = (props) => {
   };
 
   const onSubmitfood = (event) => {
-    event.preventDefault();
-    var data3 = "Placed";
-    setData(data.canteen1
-    );
-    setdata({
-      email: Data.email,
-      name: Data.name,
-      year: Data.year,
-      age:Data.year,
-    });
-    
-    const newUser1 = {
-      item: item,
-      canteen2: canteen2,
-      price: price,
-      total: total,
-      add_on: add_on,
-      quantity: quantity,
-      status:data3,
-      email:email,
-      name: name,
-      batch: batch,
-      age: age,
-    };
-    
-    console.log(newUser1.name);
-    axios
-      .post("http://localhost:4000/buyfood/buy_reg", newUser1)
-      .then((response) => {
-        alert("Created\t" + response.data.name);
-        console.log(response.data);
+    var dt = new Date();
 
+    var startTime = data.canteen_open+":00";
+    var endTime = data.canteen_close+":00";
+    console.log(startTime,endTime);
+    
+    var s =  startTime.split(':');
+    var dt1 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), parseInt(s[0]), parseInt(s[1]), parseInt(s[2]));
+    
+    var e =  endTime.split(':');
+    var dt2 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(),parseInt(e[0]), parseInt(e[1]), parseInt(e[2]));
+    
+    var value =  (dt >= dt1 && dt <= dt2) ? true : false;
+
+    
+    if (value) {
+      event.preventDefault();
+      var data3 = "Placed";
+      setData(data.canteen1
+      );
+      setdata({
+        email: Data.email,
+        name: Data.name,
+        year: Data.year,
+        age: Data.age,
       });
-    resetInputs();
+
+      const newUser1 = {
+        item: item,
+        canteen2: canteen2,
+        price: price,
+        total: total,
+        add_on: add_on,
+        quantity: quantity,
+        status: data3,
+        email: email,
+        name: name,
+        batch: batch,
+        age: age,
+      };
+
+      console.log(newUser1.name);
+      axios
+        .post("http://localhost:4000/buyfood/buy_reg", newUser1)
+        .then((response) => {
+          alert("Created\t" + response.data.name);
+          console.log(response.data);
+
+        });
+      const newUser2 = {
+        total: total,
+        email: email,
+      };
+
+      axios
+        .post("http://localhost:4000/user/old_monk", newUser2)
+        .then((response) => {
+          alert(response.data);
+          console.log(response.data);
+          localStorage.setItem('user', JSON.stringify(response.data));
+        });
+      resetInputs();
+
+    }
+else{
+  alert("canteen is closed");
+}
   };
 
   return (
@@ -212,6 +260,7 @@ const Register = (props) => {
             type="number"
             value={quantity}
             onChange={onChangequantity}
+            InputProps={{ inputProps: { min: 1, max: 10 } }}
             InputLabelProps={{
               shrink: true,
             }}
@@ -219,7 +268,7 @@ const Register = (props) => {
         </Grid>
         <Grid item xs={12} style={{ minWidth: 80 }}>
           <FormControl variant="standard" sx={{ m: 1, minWidth: 230 }}>
-            <InputLabel id="demo-simple-select-standard-label">Age</InputLabel>
+            <InputLabel id="demo-simple-select-standard-label">Add On</InputLabel>
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
@@ -227,12 +276,12 @@ const Register = (props) => {
               onChange={handleChange}
               label="Age"
             >
-              <MenuItem value="">
-                <em>None</em>
+              <MenuItem value="none,0">
+                None
               </MenuItem>
-              <MenuItem value="extra masala">extra masala</MenuItem>
-              <MenuItem value="extra cheese">extra cheese</MenuItem>
-              <MenuItem value="extra butter">extra butter</MenuItem>
+              <MenuItem value="extra masala,10">extra masala</MenuItem>
+              <MenuItem value="extra cheese,10">extra cheese</MenuItem>
+              <MenuItem value="extra butter,10">extra butter</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -241,7 +290,11 @@ const Register = (props) => {
             label="total"
             variant="outlined"
             value={total}
+            key={total}
             onChange={onChangetotal}
+            inputProps={{
+              readOnly: true,
+            }}
           />
         </Grid>
         <Grid item xs={12}>

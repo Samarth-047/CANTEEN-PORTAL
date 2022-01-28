@@ -31,6 +31,8 @@ router.post("/foodadd", async (req, res) => {
         add_on2:req.body.add_on2,
         add_on3:req.body.add_on3,
         add_on4:req.body.add_on4,
+        canteen_open:req.body.canteen_open,
+        canteen_close:req.body.canteen_close,
     });
     console.log(newUser);
     newUser.save()

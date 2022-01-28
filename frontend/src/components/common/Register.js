@@ -39,7 +39,7 @@ const Register = (props) => {
   const [canteen_open, setcanteen_open] = useState("");
   const [canteen_close, setcanteen_close] = useState("");
   const [password, setpassword] = useState("");
-  const [wallet, setwallet] = useState("00");
+  const [wallet, setwallet] = useState("1");
   const navigate = useNavigate();
   const [values, setValues] = React.useState({
     showPassword: false,
@@ -95,12 +95,12 @@ const Register = (props) => {
     setmanagers_name(event.target.value);
   };
 
-  const onChangeopen = (newValue) => {
-    setcanteen_open(newValue);
+  const onChangeopen = (event) => {
+    setcanteen_open(event.target.value);
   };
 
-  const onChangeclose = (newValue) => {
-    setcanteen_close(newValue);
+  const onChangeclose = (event) => {
+    setcanteen_close(event.target.value);
   };
 
   const resetInputs = () => {
@@ -117,7 +117,7 @@ const Register = (props) => {
     setcanteen_open("");
     setValues("");
     setpassword("");
-    setwallet("");
+    setwallet("1");
   };
 
   const onSubmitseller = (event) => {
@@ -130,10 +130,10 @@ const Register = (props) => {
       contact_number: contact_number,
       manager_name: managers_name,
       canteen: canteen,
-      canteen_open: canteen_open,
       canteen_close: canteen_close,
+      canteen_open: canteen_open,
       password: password,
-      wallet:wallet,
+      wallet: "0",
     };
     console.log(newUser1);
     axios
@@ -141,6 +141,9 @@ const Register = (props) => {
       .then((response) => {
         alert("Created\t" + response.data.name);
         console.log(response.data);
+      })
+      .catch(() => {
+        alert("email already exists");
       });
 
     resetInputs();
@@ -156,7 +159,10 @@ const Register = (props) => {
       age: age,
       batch_number: batch_number,
       password: password,
+      canteen_close: canteen_close,
+      canteen_open: canteen_open,
     };
+    console.log(newUser);
 
     axios
       .post("http://localhost:4000/user/register", newUser)
@@ -188,12 +194,12 @@ const Register = (props) => {
           </Toolbar>
         </AppBar>
       </Box>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <Grid container align={"center"} spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -326,34 +332,24 @@ const Register = (props) => {
               </FormControl>
             </Grid>
 
-            {/* <Grid item xs={12}>
-          <FormControl style={{minWidth:240}}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Stack spacing={3}>
-                <TimePicker
-                    label="Opening Time"
-                    value={canteen_open}
-                    onChange={onChangeopen}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-              </Stack>
-            </LocalizationProvider>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControl style={{minWidth:240}}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Stack spacing={3}>
-                <TimePicker
-                    label="Closing Time"
-                    value={canteen_close}
-                    onChange={onChangeclose}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-              </Stack>
-            </LocalizationProvider>
-          </FormControl>
-        </Grid>  */}
+       
+            <Grid item xs={12} >
+              <TextField
+                label="open"         
+                style={{ minWidth: 235 }}
+                value={canteen_open}
+                onChange={onChangeopen}
+              />
+
+            </Grid>
+            <Grid item xs={12} >
+              <TextField
+                label="close"         
+                style={{ minWidth: 235 }}
+                value={canteen_close}
+                onChange={onChangeclose}
+              />
+            </Grid>
           </Grid>
         }
         {type === "SELLER" &&

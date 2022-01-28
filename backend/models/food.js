@@ -43,6 +43,14 @@ const Foodschema = new Schema({
 		type: String,
 		required: false
 	},
+	canteen_open: {
+		type: String,
+		required: false
+	},
+	canteen_close: {
+		type: String,
+		required: false
+	},
 });
 
 

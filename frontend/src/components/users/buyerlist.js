@@ -70,7 +70,7 @@ const FoodList = (props) => {
       .get("http://localhost:4000/food")
       .then((response) => {
         setUsers(response.data);
-        setSortedUsers(response.data);
+        // setSortedUsers(response.data);
         setSearchText("");
       })
       .catch((error) => {
@@ -87,8 +87,8 @@ const FoodList = (props) => {
     let usersTemp = users;
     const flag = sortName;
     usersTemp.sort((a, b) => {
-      if (a.date != undefined && b.date != undefined) {
-        return (1 - flag * 2) * (new Date(a.date) - new Date(b.date));
+      if (a.price != undefined && b.price != undefined) {
+        return (1 - flag * 2) * (new Date(a.price) - new Date(b.price));
       } else {
         return 1;
       }
@@ -275,7 +275,7 @@ const FoodList = (props) => {
                       <MenuItem value="sweet">sweet</MenuItem>
                       <MenuItem value="cold">cold</MenuItem>
                       <MenuItem value="hot">hot</MenuItem>
-                      <MenuItem value="apicy">spicy</MenuItem>
+                      <MenuItem value="spicy">spicy</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -319,7 +319,11 @@ const FoodList = (props) => {
                     <TableRow>
                       <TableCell> Index</TableCell>
                       <TableCell> Item</TableCell>
-                      <TableCell>Price</TableCell>
+                      <TableCell>Price
+                        <Button onClick={sortChange}>
+                          {sortName ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+                        </Button>
+                      </TableCell>
                       <TableCell>Rating</TableCell>
                       <TableCell>Type</TableCell>
                       <TableCell>Tags</TableCell>
@@ -334,10 +338,10 @@ const FoodList = (props) => {
                   <>
                     <TableBody>
                       {users.map((user, ind) => (
-                        <TableRow key={ind}>
+                        <TableRow key={ind + 1}>
                           {(searchText === "" || user.item.includes(searchText)) && (type === "" || user.type === type) && (tags === "" || user.food_tags.includes(tags)) && ((user.price >= min) && (user.price <= max)) &&
                             <>
-                              <TableCell>{ind}</TableCell>
+                              <TableCell>{ind + 1}</TableCell>
                               <TableCell>{user.item}</TableCell>
                               <TableCell>{user.price}</TableCell>
                               <TableCell>{user.rating}</TableCell>
